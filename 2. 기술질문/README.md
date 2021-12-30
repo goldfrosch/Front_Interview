@@ -1,183 +1,65 @@
-# Front_Interview 필수 요소
+# Front_Interview 기술 요소
 
-## 1. 브라우저 저장소
+## 1. 프론트엔드 빌드 시스템?
+ - 바벨(Babel)
+  모든 브라우저가 ES6이상의 최신 자바스크립트 문법을 다 이해할 수 없는 원어민 같은 느낌이다.
+  해당 친구들을 위해 친절한 번역기 Babel이 등장한 격이다.
 
- - 웹 스토리지(세션, 로컬 스토리지)
-  HTML5부터 추가 된 저장소로 key, value인 해시맵 형태로 구성되어 있다.
-  
-  세션과 로컬 스토리지의 차이는 영구성이다.
-  
-  세션은 브라우저 종료 시 사라지지만
-  로컬은 브라우저가 종료되도 저장되어있다.
-  
-  String 형태로 저장을 해야하기 때문에 객체는 기본적으로 JSON.stringify를 이용해 string화 시켜 저장하고
-  JSON.parse를 이용해서 객체화 시켜서 사용한다.
+  호환성을 위해서 별도로 코드를 작성할 필요가 없다는 게 장점
+
+  바벨의 동작원리는 3개로
+  Parsing(파씽) -> Transforming(변환) - Printing(출력) 3가지의 단계로 이어지며
+  코드를 읽고 추상 구문 트리로 변환, 추상 구문 트리를 변경 그리고 그 결과를 출력한다.
+
+  바벨은 파씽과 출력, 플러그인은 변환을 담당한다
+  바벨 플러그인은 주로 어떤 코드를 어떻게 변환할지를 담당한다.
+
+  BoilerPlates를 새로 만들면 이해하기 쉬울 듯 하다.
+
+ - 폴리필
+  최신 ECMAScript환경을 만들기 위해 코드가 실행되는 환경에 존재하지 않는 빌트인, 메소드 등을 추가하는 역할을 한다.
+  바벨은 ES6+ f를 ES5로 변환이 가능한 것들만 변환하는데 Promise같이 ES5에 변환할 수 있는게 없으면 에러가 발생
+  이런 경우에 폴리필을 통해 이슈를 해결할 수 있다. -> ES5방식으로 구현을 해 해결한다.
+
+ - Node.js
+  JavaScript의 런타임(프로그래밍 언어가 구동되는 환경)이다.
+  Read, Eval, Print, Loop 4가지 단계를 통해 런타임을 제공한다.
+   Read -> 유저의 입력 값을 받아 메모리에 저장
+   Eval -> 입력 값의 평가, 실행
+   Print -> Eval로 인해 반환된 값을 출력
+   Loop -> 위 3가지 과정을 반복 시킴
+
+  REPL보다는 따로 스크립트 파일을 만들어서 사용함
+
+  - NPM (Node Package Manager)
+   Node.js로 만들어진 모듈을 웹에 받아 설치하고 관리해주는 프로그램으로
+   Package.json이란 파일에서 목록 및 버전확인이 가능하다.
+   이 역시 BoilerPlates를 만들면 자세하게 이해할 수 있다.
+
+  ESLint, Prettier
+   코드의 통일성과 보기 편하게 만들어주는 도구들로 각각의 사용처가 다르다.
+   ESLint의 경우에는 자바스크립트 코드에서 발견된 문제 패턴을 식별하기 위한 정적 코드 분석 도구로 문법에 맞게 코드를 짤 수 있도록 도와주는 도구다.
+   Prettier의 경우에는 코드 스타일을 정리해주는 도구로 주로 공백 관리에 매우 좋다.
+
+  웹 테스크 매니저(Web Task Manager)
+   코드를 수정 후 저장하고 브라우저에서 새로고침을 해야만 변경된 내용을 확인할 수 있다. 서비스 개발 중에 html, css, js를 압축, 변환 해주는 과정을 자동화 해주는 도구라고 할 수 있다.
+   ex) Grunt, Gulp같은 도구가 주 예제다 (BoilerPlates에 넣어볼 만 할듯 하다)
+
+
+## 2. WebPack과 모듈 번들러
+ - 웹팩이란?
+  최신 프론트엔드 프레임워크에서 가장 많이 사용되는 모듈 번들러로 파일 확장자에 맞는 로더에게 위임해서 하나로 묶어주고 최종 배포용 파일을 만들어준다.
+  <script>태그가 여러개 있을 경우 순서 보장이 매우 중요하기에 이런 과정도 Webpack에서 처리를 해준다.
  
- 
- - 쿠키
-  대부분의 브라우저가 지원해주는 저장소
+ - 모듈 번들러란
+  Module Bundler란 웹 애플리케이션을 구성하는 자원(HTML, CSS, JS, Image등)을 모두 각각의 모듈로 보고 이를 조합해 병합된 하나의 결과물로 만들어주는 도구
   
-  매번 HTTP요청마다 Request로 보내야 하기에 서버에 부담이 늘어난다
-  용량이 매우작다 (약 4kb)
-  만료 기간이 존재해 특정 시간이 지나면 만료가 가능하게 할 수 있다
+ Module이란
+  프로그래밍 관점에서 특정 기능을 갖는 작은 코드 단위로 키보드를 예로 들면 키를 눌러 키를 입력하는 기능을 가진 키보드라는 파일로 관리하는 하나의 모듈이 된다.
+  웹팩에서 이 모듈은 웹 애플리케이션을 구성하는 모든 자원을 의미한다.
 
-
-
-## 2. 자바스크립트에서의 this
+ Module Bundling이란?
+  웹 애플리케이션을 구성하는 몇십, 몇백개의 자원들을 하나의 파일로 병합, 압축해주는 동작을 모듈 번들링이라고 한다.
+  과정은 빌드 -> 번들링 -> 변환 이 3개를 통틀어 모듈 번들링이라고 정의한다
   
-  this는 매우 유동적으로 사용할 수 있다.
-  기본적으로 전역 함수에서 선언하는 this는 window를 가르킨다
-  ex)
-  let a = 100;
-
-  console.log(window.a) // 100
-  console.log(this.a) // 100
-
-  엄격 모드라는 것이 존재한다. 엄격 모드는 말그대로 엄격하게 관리 한다 라는 의미이며
-  문법을 올바르게 지키지 않는 이상 undefined가 됩니다.
-  
-  ex)
-  function exam1() {
-   return this;
-  }
-  
-  console.log(exam1() === window) // true
-  console.log(exam1() === global) // true
-  
-  만약 여기에 엄격모드가 들어갈 시
-  function exam1() {
-    "use strict";
-    return this;
-  }
-  
-  console.log(exam1() === window) // false
-  console.log(window.exam1() === window) // true
-  
-  this는 위치에 따라서 인식되는 범위가 다르다
-  1. 함수에서의 this -> 기본적으로 window임
-  2. 메소드에서의 this -> 메소드를 실행하고 있는 객체를 기준으로 함
-  3. 생성자에서의 this -> 생성자는 자바처럼 반드시 new 객체() 로 선언을 해줘야 하며 생성자에서의 this는 만들어 질 새 객체가 중심이 된다.
-  4. 객체에서의 this -> 객체를 가르킨다
-  5. 간접 실행에서의 this -> call(), apply()의 메소드를 호출하는 것을 의미하며 call()은 주어진 this값 및 각각 전달된 인수와 함께 함수를 호출해준다.
-     / apply()는 주어진 this값과 배열로 제공되는 arguments로 함수를 호출한다.
-    ex)
-    function add(c, d) {
-      return this.a + this.b + c + d;
-    };
     
-    let variable = {
-      a: 1,
-      b: 3,
-    };
-    
-    add.call(variable, 5, 7); // this로 사용할 객체를 variable로 지정했기에 this.a = 1, this.b = 3으로 총 16이라는 결과물이 나온다.
-    add.apply(variable, [10, 20]); // call과 마찬가지로 처음에 variable은 this로 사용할 객체, 두번째 인자인 배열은 함수에 들어갈 인자들로
-    //this.a = 1, this.b = 3이라는 결과가 도출된다. 1 + 3 + 10 + 20 총 34라는 결과
-    
-  6. 바인딩 함수에서의 this -> bind()메소드를 호출해서 사용하는 경우로 bind()는 새로운 함수를 생성하는 방식으로 "strict mode"일때와 아닐 때가 또 다르다
-    ex)
-    const module = {
-      x: 42,
-      getX: function() {
-        return this.x;
-      }
-    };
-    
-    const unboundGetX = module.getX;
-    console.log(unboundGetX()); // this.x를 가르키는 것은 그냥 함수로 설정이 되 전역 변수인 x는 존재하지 않아 undefined로 출력된다.
-    
-    const boundGetX = unboundGetX.bind(module);
-    console.log(boundGetX()); // 전역으로 선언된 unboundGetX를 boundGetX에서 module의 getX를 호출했기에 return이 올바르게 42로 출력이 된다.
-    
-  7. 화살표 함수에서의 this -> 화살표 함수는 간단한 형태로 정의하거나 혹은 문맥을 바인드 하기 위해 주로 사용되는 함수
-  
-    ex)
-    let person = {
-      name: "youngjin",
-      getName: function (){
-        console.log(this); // 객체 변수인 person을 가르친다;
-        setTimeout(() => {
-          console.log(this); // 객체 변수인 person을 가르친다
-          console.log(this.name) //person.name => youngjin를 출력한다.
-        }, 1000);
-      }
-    }
-    
-    person.getName();
- 
-   일반 함수의 this와 화살표 함수의 this의 차이
-   
-   자바스크립트에서의 함수에서는 어디서 선언되든 this는 전역 객체(window)를 가르킨다.
-   화살표 함수의 this는 언제나 상위 스코프의 this를 가르킨다
- 
-
-
-## 3. 자바스크립트 이벤트 관리
- 이벤트를 등록하는 방법
- ex)
- ```
-  let button = document.querySelector('button');
-  button.addEventListener('click', addItem);
-
-  function addItem(event) {
-   console.log(event);
-  }
- ```
-
- 이벤트 전파의 방식은 2가지로 나뉜다
-  - 이벤트 버블링 - Event Bubbling -> 특정 화면 요소에서 이벤트가 발생하였을 때 이벤트가 하위 요소에서 점점 상위 요소로 전달되어 가는 방식을 의미 즉 자식 => 부모 에게 전파함
-  
-  - 이벤트 캡쳐링 - Event Capturing -> 버블링과 반대로 부모 => 자식으로 전파하는 방식
-  
-  event.preventDefault()으로 해당 이벤트의 브라우저 기본 동작을 막을 수 있다.
-  event.stopPropagation()으로 이벤트가 자식에서 부모로 올라가는 과정을 중단시킬 수 있음
-  
-## 4. 동기와 비동기 그리고 Promise
- 동기: 요청을 보낸 이후 순차적으로 처리하는 방식, 일반적인 코드 프로세스랑 동일함
- 비동기: 요청을 바로 처리하지 않고 별도로 처리하는 방식, 직렬이 아닌 병렬로 처리하게 둠
- 
- Callback함수란?
-  나중에 호출을 해주겠다라고 선언하는 함수
-  처리 순서를 계속 정해주면서 하다가 callback지옥에 빠지게 됨
-  ```
-  .then() {
-   .then() {
-    .then() {
-     이쯤되면 대략 정신이 멍해진다
-    }
-    .catch() {
-     /suicide
-    }
-   }.catch() {
-    이게 무야...
-   }
-  }.catch() {
-   힝
-  }
-  ```
-  해당 부분을 이제 보완해주는게 ES6에서 나왔다고 한다
-  
-  Promise?
-   어떤 작업의 중간 상태를 나타내주는 Object형식
-   then, catch로 접근하고 finally는 무조건 처리하는 방식의 함수
-   실행 결과랑 결과물이랑 같이 반환해줌
-   
-  두개다 문제가 있으므로 개인적으로 사용하는 방식은 async와 await를 사용해
-  try, catch를 사용해 한번만 사용하는 방식을 추구
-  
-  ex)
-   ```
-    const exam = async () => {
-     try {
-      const data = await axios.get('/');
-      아무튼 뭐시기
-      이렇게 받으면 장땡이더만
-      개꿀!
-     } catch(e) {
-      console.log(e);
-     }
-    }
-   ```
- 
- 비동기는 그래서 async await를 쓰는게 가장 좋다!
- 
