@@ -22,6 +22,7 @@
   만료 기간이 존재해 특정 시간이 지나면 만료가 가능하게 할 수 있다
 
 
+
 ## 2. 자바스크립트에서의 this
   
   this는 매우 유동적으로 사용할 수 있다.
@@ -108,4 +109,75 @@
    
    자바스크립트에서의 함수에서는 어디서 선언되든 this는 전역 객체(window)를 가르킨다.
    화살표 함수의 this는 언제나 상위 스코프의 this를 가르킨다
+ 
+
+
+## 3. 자바스크립트 이벤트 관리
+ 이벤트를 등록하는 방법
+ ex)
+ ```
+  let button = document.querySelector('button');
+  button.addEventListener('click', addItem);
+
+  function addItem(event) {
+   console.log(event);
+  }
+ ```
+
+ 이벤트 전파의 방식은 2가지로 나뉜다
+  - 이벤트 버블링 - Event Bubbling -> 특정 화면 요소에서 이벤트가 발생하였을 때 이벤트가 하위 요소에서 점점 상위 요소로 전달되어 가는 방식을 의미 즉 자식 => 부모 에게 전파함
+  
+  - 이벤트 캡쳐링 - Event Capturing -> 버블링과 반대로 부모 => 자식으로 전파하는 방식
+  
+  event.preventDefault()으로 해당 이벤트의 브라우저 기본 동작을 막을 수 있다.
+  event.stopPropagation()으로 이벤트가 자식에서 부모로 올라가는 과정을 중단시킬 수 있음
+  
+## 4. 동기와 비동기 그리고 Promise
+ 동기: 요청을 보낸 이후 순차적으로 처리하는 방식, 일반적인 코드 프로세스랑 동일함
+ 비동기: 요청을 바로 처리하지 않고 별도로 처리하는 방식, 직렬이 아닌 병렬로 처리하게 둠
+ 
+ Callback함수란?
+  나중에 호출을 해주겠다라고 선언하는 함수
+  처리 순서를 계속 정해주면서 하다가 callback지옥에 빠지게 됨
+  ```
+  .then() {
+   .then() {
+    .then() {
+     이쯤되면 대략 정신이 멍해진다
+    }
+    .catch() {
+     /suicide
+    }
+   }.catch() {
+    이게 무야...
+   }
+  }.catch() {
+   힝
+  }
+  ```
+  해당 부분을 이제 보완해주는게 ES6에서 나왔다고 한다
+  
+  Promise?
+   어떤 작업의 중간 상태를 나타내주는 Object형식
+   then, catch로 접근하고 finally는 무조건 처리하는 방식의 함수
+   실행 결과랑 결과물이랑 같이 반환해줌
+   
+  두개다 문제가 있으므로 개인적으로 사용하는 방식은 async와 await를 사용해
+  try, catch를 사용해 한번만 사용하는 방식을 추구
+  
+  ex)
+   ```
+    const exam = async () => {
+     try {
+      const data = await axios.get('/');
+      아무튼 뭐시기
+      이렇게 받으면 장땡이더만
+      개꿀!
+     } catch(e) {
+      console.log(e);
+     }
+    }
+   ```
+ 
+ 비동기는 그래서 async await를 쓰는게 가장 좋다!
  
