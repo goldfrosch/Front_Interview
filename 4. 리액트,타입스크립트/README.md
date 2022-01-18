@@ -79,7 +79,7 @@ any는 너무 광범위하고 특정 타입들을 지정해주기에 매우 애�
 
   interface Developer {
     name: number;
-    skill: string[];
+    skills: string[];
   }
 
   type GoldFrosch = Person & Developer;
@@ -88,7 +88,7 @@ any는 너무 광범위하고 특정 타입들을 지정해주기에 매우 애�
   {
     name: never;
     age: number;
-    skill: string[];
+    skills: string[];
   }
   ```
 
@@ -140,3 +140,81 @@ any를 사용하면 안되는 대표적인 이유는 타입 검증이다. any를
   Action을 받아 Store의 상태값을 변경해주는 중간 처리 장치를 의미하며 dispatch() 메소드를 사용해야한다.
 
   Redux는 스토어라는 공간 안에서 디스패치를 통해 액션을 선언 그리고 액션을 통해 reducer가 스토어를 변경 후 업데이트 하는 것이 기본 원리다.
+
+## 5. Life Cycle
+
+- componentDidMount
+
+  컴포넌트가 첫 렌더링을 마치고 나면 호출되는 메소드
+
+  이 메서드가 호출되는 시점은 우리가 만든 컴포넌트가 화면에 나타날 경우다.
+
+- shouldComponentUpdate
+
+  컴포넌트가 리렌더링 할지 말지를 결정하는 메소드, 보통 최적화할 때 많이 사용하며 useMemo랑 비슷한 역할을 수행 함
+
+- componentDidUpdate
+
+  리렌더링을 마치고 화면에 우리가 원하는 변화가 모두 반영되고 난 뒤 호출되는 메서드
+
+  파라미터는 prevProps, prevState, snapshot으로 3번째 파라미터에서는 반환한 값을 조회 할 수 있다.
+
+- componentWillUnmount
+
+  컴포넌트가 화면에서 사라지기 직전에 호출되는 메소드
+  일반적으로는 setTimeout나 DOM에 직접적으로 등록한 메소드를 지우는 역할을 함
+
+- useEffect
+
+  클래스형 컴포넌트가 아닌 함수형 컴포넌트에서 상태관리를 위해 항상 사용하는 hooks이며 각각 마운트, 업데이트, 언마운트를 하나의 hooks로 처리하는 간편함이 있다.
+
+  마운트, 언마운트 시
+
+  마운트, 언마운트 시에 보통 넣는 함수들은 정해져있다.
+
+  - 마운트 시
+
+    - props로 받은 컴포넌트 로컬 상태 설정
+    - 외부 API 호출
+    - 라이브러리 사용 호출
+    - setInterval, setTimeout같은 작업 예약 호출
+
+  - 언마운트 시
+    - setInterval, setTimeout같은 작업 clear
+    - 라이브러리 인스턴스 제거
+
+  ```
+  useEffect(() => {
+    console.log("마운트 됨");
+    return () => {
+      console.log("언마운트 됨");
+    }
+  },[]);
+  ```
+
+  기본적으로 useEffect의 배열(deps 라고 부르는 듯 하다) 안에 값이 없으면 일반적인 마운트 언마운트 형식으로 작동하며 처음에 작성하는 함수가 마운트 시 return안에 넣는 함수들이 언마운트 되는 시점에서 동작하는 것들이다.
+
+  업데이트 시
+
+  ```
+  useEffect(() => {
+    console.log('user 값이 설정됨');
+    console.log(user);
+    return () => {
+      console.log('user 가 바뀌기 전..');
+      console.log(user);
+    };
+  }, [user]);
+  ```
+
+  배열(deps)값에 집어넣음으로써 배열안의 값이 업데이트 될 때마다 그리고 return으로 언마운트 될 때도 동작하게 된다.
+
+  마지막으로 deps를 아에 생략하게 될 경우는
+
+  ```
+  useEffect(() => {
+    console.log("HI BRO");
+  })
+  ```
+
+  컴포넌트가 리렌더링 될 때 마다 호출하게 된다.
