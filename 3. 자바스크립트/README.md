@@ -2,13 +2,14 @@
 
 ## 1. ES5 & ES6의 차이점
 
-    es5와 es6의 차이는 대표적으로 6가지가 존재한다.
-    - 템플릿 리터럴
-    - 화살표(arrow) 함수
-    - this
-    - 변수 선언
-    - 모듈
-    - 클래스
+es5와 es6의 차이는 대표적으로 6가지가 존재한다.
+
+- 템플릿 리터럴
+- 화살표(arrow) 함수
+- this
+- 변수 선언
+- 모듈
+- 클래스
 
 1.  템플릿 리터럴
 
@@ -35,13 +36,13 @@
     ES6에서는 let, const라는 것이 추가가 되었다. let의 경우에 한번 선언된 변수에 동일한 이름으로 재선언이 불가능하게 되었다.
 
     ```
-       let x = 0;
+    let x = 0;
 
-       let x = 12;
+    let x = 12;
 
-       //이게안되는 거임
-       //var은 되는데
-       //근데 이게 더 좋은듯?
+    //이게안되는 거임
+    //var은 되는데
+    //근데 이게 더 좋은듯?
     ```
 
     let과 const는 원래 사용하는 변수처럼 함수에 선언된 변수값은 외부에서 호출이 불가능하다.
@@ -57,3 +58,51 @@
 6.  클래스
 
     ES5의 경우에는 함수 prototype을 이용해 비슷한 방식으로 실현이 가능했으나 ES6에서 추가가 되면서 super를 이용해 상속이 가능하다.
+
+## 2. 디바운싱(Debouncing)과 쓰로틀링(Throttling)
+
+디바운싱과 쓰로틀링은 프로그래밍 기법 중 하나
+
+- 디바운싱
+
+  연이어 호출되는 함수들 중의 가장 마지막 함수만 호출되도록 하는 것을 의미
+
+- 쓰로틀링
+
+  마지막 함수가 호출된 후 일정 시간 동안 호출되지 않도록 막는 것
+
+주로 스크롤 이벤트에서 많이 사용이 되는 기법으로 자바스크립트에서는 setTimeout을 이용해서 해당 이벤트들을 처리한다
+
+디바운싱 예제
+
+```
+  let timer;
+  document.querySelector('#input').addEventListener('input', function(e) {
+      if (timer) {
+          clearTimeout(timer);
+      }
+      timer = setTimeout(function() {
+          console.log('시간은 움직였다');
+      }, 200);
+  })
+```
+
+특정 이벤트가 발생할 때 마다 이렇게 timeout을 한 변수에 계속 선언해줌으로써 timeout을 초기화 시키고 동시에 마지막을 기점으로 선언된 timeout 이벤트 하나만을 선언시켜주는 기법
+
+쓰로틀링 예제
+
+```
+  let timer;
+  document.querySelector('#input').addEventListener('input', function(e) {
+      if(!timer) {
+          timer = setTimeout(function() {
+              timer = null;
+              console.log("쿨타임 다 됨?");
+          },200);
+      }
+  })
+```
+
+이런식으로 timer라는 변수가 null일 경우에 0.2초 후에 timer가 null이 되게하는 함수를 만들어줘 이벤트를 선언할 때마다 null인지 아닌지를 검증해주고 null일 경우에만 이벤트를 진행시키는 기법이다.
+
+스크롤 이벤트에서 많이 쓰이기 좋은 기법 같다.
