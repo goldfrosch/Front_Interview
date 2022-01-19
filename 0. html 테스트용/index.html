@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <form id="test">
+      <input id="testValue" />
+      <button type="submit">테스트 버튼</button>
+    </form>
+    <script>
+      var test = document.getElementById("test");
+
+      function testFunc(event) {
+        event.preventDefault();
+        console.log(document.getElementById('testValue').value);
+      }
+
+      test.addEventListener('submit', testFunc);
+    </script>
+  </body>
+</html>
