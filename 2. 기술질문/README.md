@@ -19,8 +19,8 @@
 
 - 폴리필
   최신 ECMAScript환경을 만들기 위해 코드가 실행되는 환경에 존재하지 않는 빌트인, 메소드 등을 추가하는 역할을 한다.
-  바벨은 ES6+ 를 ES5로 변환이 가능한 것들만 변환하는데 Promise같이 ES5에 변환할 수 있는게 없으면 에러가 발생
-  이런 경우에 폴리필을 통해 이슈를 해결할 수 있다. -> ES5방식으로 구현을 해 해결한다.
+  바벨은 ES6+ 를 ES5로 변환이 가능한 것들만 변환하는데 map, filter같은 ES6에만 존재하는 함수같이 ES5로 변환할 수 있는게 없으면 에러가 발생
+  이런 경우에 폴리필이 ES6이상의 문법을 ES5로 변환시켜주는 역할을 한다.
 
 - Node.js
   JavaScript의 런타임(프로그래밍 언어가 구동되는 환경)이다.
@@ -94,8 +94,9 @@
   defer의 경우에는 async와 비슷하게 병렬로 스크립트들을 로드하고 그 후 DOM이 전부 로드 된 후에 해석을 실행합니다. 그러므로 DOM처리를 멈추는 async와는 다르게 defer는 모든 DOM이 로딩된 이후 실행하기 때문에 로딩 속도 자체에 문제를 주지는 않는다. 그래서 기본적으로 DOM의 모든 엘리먼트에 접속이 가능하기 때문에 자주 사용한다. 그러므로 더 빨리 로드되는 스크립트가 있어도 실행은 항상 선언된 순서대로 다시 작동하게 된다.
 
 - attribute와 property
-  attribute: HTML 마크업 요소에서 추가적인 정보를 저장할 때 사용하는 방식인데 주로 key="value" 방식으로 이용이 된다. <div class="test"></div>일 경우에 "test"라는 attribute를 가지고 있게 되는 것이다.
-  property: attribute에 대해 HTML DOM트리안에서의 표현이 되며 전의 div를 예시로 하게 될때 "test"라는 attribute는 className이라는 property라는 것을 가지게 된다
+  attribute: HTML 마크업 요소에서 추가적인 정보를 저장할 때 사용하는 방식인데 주로 key="value" 방식으로 이용이 된다.
+
+  <div class="test" />일 경우에 "test"라는 attribute를 가지고 있게 되는 것이다. property: attribute에 대해 HTML DOM트리안에서의 표현이 되며 전의 div를 예시로 하게 될때 "test"라는 attribute는 className이라는 property라는 것을 가지게 된다
 
 ## 4. 프론트엔드 성능 최적화
 
