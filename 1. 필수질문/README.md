@@ -171,14 +171,14 @@ then, catch로 접근하고 finally는 무조건 처리하는 방식의 함수
 두개다 문제가 있으므로 개인적으로 사용하는 방식은 async와 await를 사용해
 try, catch를 사용해 한번만 사용하는 방식을 추구
 
-해당 부분들을 이제 보완해주는게 ES6에서 나왔다고 한다
-
 ex)
 
 ```
+  //async로 비동기 처리를 선언
  const exam = async () => {
   try {
    const data = await axios.get('/');
+   //await로 Promise 객체를 동기처리처럼 기다려줌
    아무튼 뭐시기
    이렇게 받으면 장땡이더만
    개꿀!

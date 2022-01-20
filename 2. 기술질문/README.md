@@ -96,7 +96,7 @@
 - attribute와 property
   attribute: HTML 마크업 요소에서 추가적인 정보를 저장할 때 사용하는 방식인데 주로 key="value" 방식으로 이용이 된다.
 
-  <div class="test" />일 경우에 "test"라는 attribute를 가지고 있게 되는 것이다. property: attribute에 대해 HTML DOM트리안에서의 표현이 되며 전의 div를 예시로 하게 될때 "test"라는 attribute는 className이라는 property라는 것을 가지게 된다
+  예를 들어 <div class="test" />일 경우에 "test"라는 attribute를 가지고 있게 되는 것이다. property: attribute에 대해 HTML DOM트리안에서의 표현이 되며 전의 div를 예시로 하게 될때 "test"라는 attribute는 className이라는 property라는 것을 가지게 된다
 
 ## 4. 프론트엔드 성능 최적화
 
